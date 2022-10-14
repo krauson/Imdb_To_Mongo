@@ -28,6 +28,7 @@ class TMDBDownloader:
         imdb_obj = imdb.IMDb()
         print(f"imdb_obj:{imdb_obj}")
         movies = imdb_obj.search_movie(self.movie_name)
+        print(f"movie:{movies}")
         print(f"movie[0]:{movies[0]}")
         imdb_id = "tt" + str(movies[0].movieID)
         return imdb_id

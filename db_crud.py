@@ -58,22 +58,21 @@ class MongoDB:
         return output
 
 
-    def is_filename_exist(self, filename_prefix):
-        print(f"prefix_filename = {filename_prefix}")
-        reg_query = {"filename": {"$regex": f"^{filename_prefix}"}}
-        query = {"filename": filename_prefix}
+    def is_filename_exist(self, filename):
+        # print(f"prefix_filename = {filename_prefix}")
+        # reg_query = {"filename": {"$regex": f"^{filename_prefix}"}}
+        query = {"filename": filename}
         is_file_exist = False
-        reg_mydoc = self.fs.find(reg_query)
+        # reg_mydoc = self.fs.find(reg_query)
 
 
-        for doc in reg_mydoc: # if the loop will go at least one time the regex exp exists
-            is_file_exist = True
+        # for doc in reg_mydoc: # if the loop will go at least one time the regex exp exists
 
 
-        if is_file_exist:
-            print(f"The movie '{filename_prefix}' exist in Mongo DB.")
+        if self.fs.exists(filename):
+            print(f"The movie '{filename}' exist in Mongo DB.")
         else:
-            print(f"The movie '{filename_prefix}' doesn't exist in Mongo DB.")
+            print(f"The movie '{filename}' doesn't exist in Mongo DB.")
             print(f"looking for it in the TMDB website..")
         return is_file_exist
 
