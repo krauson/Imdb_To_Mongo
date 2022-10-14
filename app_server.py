@@ -14,4 +14,4 @@ def search():
     download_poster_to_user_pc(movie_name)
     return render_template("hello.html", movie_name=movie_name)
 
-app.run(host='127.0.0.5', port=81, debug=True)
+app.run(host='127.0.0.5', port=81, debug=False)

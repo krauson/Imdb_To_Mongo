@@ -8,6 +8,13 @@ def convert_image_size_to_int(x: str) -> int:
     return float("inf") if x == 'original' else int(x[1:])
 
 
+def is_movie_exist_in_tmdb(movie_name):
+    print("Is movie exist in IMDB")
+    imdb_obj = imdb.IMDb()
+    movies = imdb_obj.search_movie(movie_name)
+    print(f"movies:{movies}")
+    return len(movies) > 0
+
 class TMDBDownloader:
     content_path = content_path
 
@@ -26,16 +33,23 @@ class TMDBDownloader:
 
     def get_movie_id(self):
         imdb_obj = imdb.IMDb()
-        print(f"imdb_obj:{imdb_obj}")
         movies = imdb_obj.search_movie(self.movie_name)
-        print(f"movie:{movies}")
-        print(f"movie[0]:{movies[0]}")
+        print(f"movies:{movies}")
+        if len(movies) == 0:
+            print(f"Didn't find the movie in imdb repo.")
+            return None
+
+        else:
+            print(f"movie:{movies}")
+            print(f"movie[0]:{movies[0]}")
         imdb_id = "tt" + str(movies[0].movieID)
         return imdb_id
 
     def get_poster_url(self):
         img_url_request = self.IMAGE_REQUEST_PATTERN.format(key=self.KEY, imdbid=self.imdb_id)
         api_response = requests.get(img_url_request).json()
+        print(f"image_url{img_url_request}")
+        print(f"api_response:{api_response}")
         print(f"api_response[posters]:{api_response['posters']}")
         posters = api_response['posters']
         poster_urls = []
@@ -68,7 +82,8 @@ class TMDBDownloader:
 
 
 def main():
-    movie_name = "Matrix"
+    movie_name = "frozen"
+    print(is_movie_exist_in_tmdb(movie_name))
     tmbd_conn = TMDBDownloader(movie_name)
     print(tmbd_conn.download_poster_file())
 

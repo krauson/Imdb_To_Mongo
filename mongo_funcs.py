@@ -16,6 +16,8 @@ class MongoDB:
         self.fs = fs
         self.db = db
         self.movie_name = movie_name
+        self.filename_prefix = movie_name + "_poster"
+
 
     def write_image_file(self, file_path, imdb_code):
         """Writes an image file to the DB"""
@@ -26,18 +28,21 @@ class MongoDB:
             self.fs.put(data, filename=filename, imdb_code=imdb_code)
         print(f"Image {filename} was inserted to mongoDB")
 
-    def get_file_id(self, movie_name):
-        file_metadata = self.db.fs.files.find_one({"filename": movie_name})
+    def get_file_id(self):
+        regex_query = {"filename": {"$regex": f"^{self.filename_prefix}"}}
+        is_file_exist = False
+        reg_mydoc = self.fs.find(regex_query)
+        file_metadata = self.db.fs.files.find_one(regex_query)
+        print(f"file_metadata {file_metadata}")
         if file_metadata is None:
-            logging.debug(f"movie {movie_name} is not in the DB.")
             response = False
         else:
             logging.debug(f"file id for the movie {movie_name}: {file_metadata['_id']}")
             response = file_metadata['_id']
         return response
 
-    def read_image_file(self, movie_name):
-        file_id = self.get_file_id(movie_name)
+    def read_image_file(self):
+        file_id = self.get_file_id(self.movie_name)
         output_data = self.fs.get(file_id).read()
         print(f"output_data: {output_data}")
         return output_data
@@ -58,44 +63,65 @@ class MongoDB:
         return output
 
 
-    def is_filename_exist(self, filename):
-        # print(f"prefix_filename = {filename_prefix}")
-        # reg_query = {"filename": {"$regex": f"^{filename_prefix}"}}
-        query = {"filename": filename}
+    def is_filename_exist(self):
+        print(f"prefix_filename = {self.filename_prefix}")
+        regex_query = {"filename": {"$regex": f"^{self.filename_prefix}"}}
         is_file_exist = False
-        # reg_mydoc = self.fs.find(reg_query)
+        reg_mydoc = self.fs.find(regex_query)
 
+        for _ in reg_mydoc: # if the loop will go at least one time the regex exp exists
+            print(f"file {self.filename_prefix} was found in MongoDB")
+            is_file_exist = True
 
-        # for doc in reg_mydoc: # if the loop will go at least one time the regex exp exists
-
-
-        if self.fs.exists(filename):
-            print(f"The movie '{filename}' exist in Mongo DB.")
-        else:
-            print(f"The movie '{filename}' doesn't exist in Mongo DB.")
-            print(f"looking for it in the TMDB website..")
+        if not is_file_exist:
+            print(f"file {self.filename_prefix} was not found in MongoDB")
         return is_file_exist
 
-    def download_file_from_db(self, filename, target_location):
-        file_id = self.get_file_id(filename)
+
+    def get_full_filename(self):
+        print("in get full filename")
+        regex_query = {"filename": {"$regex": f"^{self.filename_prefix}"}}
+        reg_mydoc = self.fs.find(regex_query)
+        for doc in reg_mydoc: # if the loop will go at least one time the regex exp exists
+            print(f"doc: {doc}")
+            for i in doc:
+                print(i)
+
+    def download_file_from_db(self):
+        print(f"in download from mongo. filename = {self.filename_prefix}")
+        file_id = self.get_file_id()
+        print(f"file_id = {file_id}")
         poster_bytes = self.fs.get(file_id).read()
         print(f"output_data: {poster_bytes}")
 
-        target_path = target_location + '\\' + filename + '.jpg'
+        target_path = target_location + '\\' + filename
+        print(f"target_path = {target_path}")
         with open(target_path, 'wb') as output_file:
             output_file.write(poster_bytes)
         print(f"File {filename} was dowloaded to: {target_path}")
+
 
 if __name__ == "__main__":
     """
     test module
     """
-    mdb = MongoDB("localhost", 27017, "movies")
+    mdb = MongoDB("localhost", 27017, "Frozen")
+    mdb.download_file_from_db()
 
-    poster_abs_path = r"C:\Users\Hagai\Desktop\AWS\study_subjects\python\imdb_project\posters\Frozen_poster.jpeg"
+
+
     # mdb.write_image_file(poster_abs_path, "bla-bla")
-    print(mdb.is_filename_exist("Frozen_poster"))
+    print(mdb.is_filename_exist())
+    # mdb.get_full_filename()
     # mdb.is_file_exist(movie_name)
-    # mdb.read_image_file("star wars")
+    # mdb.read_image_file()
     # print(mdb.update_image_file_meta_data(movie_name, "filename2", "updated"))
     # mdb.del_image_file("spiderman")
+
+    # filename = "Frozen_poster.jpeg"
+    # poster_abs_path = r"C:\Users\Hagai\Desktop\AWS\course projects\Imdb_To_Mongo\posters\Frozen_poster.jpeg"
+    # target_path = '\\'.join(target_path)
+    # print(target_path)
+    # target_path = poster_abs_path.split('\\')[:-1]
+
+
