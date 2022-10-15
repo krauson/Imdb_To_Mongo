@@ -10,6 +10,7 @@ def index():
 @app.route('/search', methods=["GET", "POST"])
 def search():
     movie_name = request.form['movie_name']
+    movie_name = movie_name.lower()
     print(f"movie_name = {movie_name}")
     download_poster_to_user_pc(movie_name)
     return render_template("hello.html", movie_name=movie_name)

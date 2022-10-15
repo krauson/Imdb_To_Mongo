@@ -9,7 +9,7 @@ def convert_image_size_to_int(x: str) -> int:
 
 
 def is_movie_exist_in_tmdb(movie_name):
-    print("Is movie exist in IMDB")
+    print("IN Is movie exist in IMDB")
     imdb_obj = imdb.IMDb()
     movies = imdb_obj.search_movie(movie_name)
     print(f"movies:{movies}")
@@ -29,7 +29,14 @@ class TMDBDownloader:
         self.max_size = max(self.sizes, key=convert_image_size_to_int)  # use the sort function in max to get biggest size
         self.movie_name = movie_name         # check name for legality
         self.imdb_id = self.get_movie_id()
-        self.filename = self.set_filename()
+        self.filename = movie_name + "_poster.jpeg"
+        self.is_poster_in_imdb = self.is_movie_exist_in_tmdb()
+
+    def is_movie_exist_in_tmdb(self):
+        print("IN Is movie exist in IMDB")
+        movies = self.search_movie(self.movie_name)
+        print(f"movies:{movies}")
+        return len(movies) > 0
 
     def get_movie_id(self):
         imdb_obj = imdb.IMDb()
@@ -59,13 +66,13 @@ class TMDBDownloader:
             poster_urls.append(url)
         return poster_urls[0] # return only the first poster url
 
-    def set_filename(self):
-        poster_url = self.get_poster_url()
-        print(f"poster_url= {poster_url}")
-        poster_data = requests.get(poster_url)
-        filetype = poster_data.headers['content-type'].split('/')[-1]
-        self.filename = '{0}_poster.{1}'.format(self.movie_name, filetype)
-        return self.filename
+    # def set_filename(self):
+    #     poster_url = self.get_poster_url()
+    #     print(f"poster_url= {poster_url}")
+    #     poster_data = requests.get(poster_url)
+    #     filetype = poster_data.headers['content-type'].split('/')[-1]
+    #     self.filename = '{0}_poster.{1}'.format(self.movie_name, filetype)
+    #     return self.filename
 
     def download_poster_file(self):
         poster_url = self.get_poster_url()
