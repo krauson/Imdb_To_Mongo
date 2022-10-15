@@ -29,9 +29,14 @@ class TMDBDownloader:
         imdb_obj = imdb.IMDb()
         movies = imdb_obj.search_movie(self.movie_name)
         print(f"movies:{movies}")
-        print(f"movies[0]:{movies[0]}")
-        imdb_id = "tt" + str(movies[0].movieID)
-        return imdb_id
+        try:
+            print(f"movies[0]:{movies[0]}")
+            imdb_id = "tt" + str(movies[0].movieID)
+            return imdb_id
+
+        except IndexError as e:
+            print(e)
+            print("Refresh and try again in a minute, too frequent API requests")
 
     def get_poster_url(self):
         img_url_request = self.IMAGE_REQUEST_PATTERN.format(key=self.KEY, imdbid=self.imdb_id)

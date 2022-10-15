@@ -9,7 +9,7 @@ def get_poster_from_tmdb_website(movie_name):
     answer = tmdb.download_poster_file()
     print(f"answer:{answer}")
     print(f"Movie {tmdb.movie_name} poster was downloaded successfully from TMDB web API to the posters directory")
-
+    return tmdb.poster_url
 
 def get_poster_from_mongo_db(movie_name, mongo_db):
     mongo_db.download_file_from_db()
@@ -31,6 +31,7 @@ def download_poster_to_user_pc(movie_name):
 
     else:
         print(f"going to download from TMDB")
-        get_poster_from_tmdb_website(movie_name)
+        poster_url = get_poster_from_tmdb_website(movie_name)
         # insert_poster_to_mongoDB
-        mongo_db.write_to_mongo()
+        mongo_db.write_to_mongo(poster_url)
+        return poster_url

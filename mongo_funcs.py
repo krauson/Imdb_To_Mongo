@@ -39,12 +39,12 @@ class MongoDB:
         self.file_id = None
 
 
-    def write_to_mongo(self):
+    def write_to_mongo(self, poster_url):
         """Writes an image file to the DB"""
         file_path = self.content_path + '\\' + self.filename
         with open(file_path, 'rb') as image_file:
             data_binary = image_file.read()
-            self.fs.put(data_binary, filename=self.filename, file_id=self.file_id)
+            self.fs.put(data_binary, filename=self.filename, poster_url=poster_url)
         print(f"Image {self.filename} was inserted to mongoDB")
 
     def set_file_id(self):
