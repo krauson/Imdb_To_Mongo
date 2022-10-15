@@ -8,6 +8,7 @@ so the next time the very same poster will be requested it will be retrieved fro
 which will be faster.
 
 Action ti do for using the app:
-1)pip install -r requirements.txt (download all the dependencies for this project)
-2)run the file app_server.py using.
+1)pip install -r requirements.txt (download all the dependencies for this project).
+2)make sure you have posters folder in the location you run app_server from.
+3)run the file app_server.py using.
 3)open the browser and choose your prefered movie.
