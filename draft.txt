@@ -1,0 +1,6 @@
+download docker
+docker -v
+docker pull mongo
+docker create -it --name MongoTest -p 5000:27017 mongo
+docker start MongoTest
+docker exec -it MongoTest bash
