@@ -35,20 +35,23 @@ class MongoDB:
         self.db = db
         self.movie_name = movie_name
         self.filename = format_filename(movie_name)
-        self.file_metadata = self.get_file_metadata()
-        print(f"fil meta:{self.file_metadata}")
-        self.file_id = self.file_metadata['_id']
+        self.file_metadata = None
+        self.file_id = None
 
 
-    def write_image_file(self, file_path, imdb_code):
+    def write_to_mongo(self):
         """Writes an image file to the DB"""
+        file_path = self.content_path + '\\' + self.filename
         with open(file_path, 'rb') as image_file:
-            data = image_file.read()
-            filename = file_path.split('\\')[-1]
-            self.fs.put(data, filename=filename, imdb_code=imdb_code)
-        print(f"Image {filename} was inserted to mongoDB")
+            data_binary = image_file.read()
+            self.fs.put(data_binary, filename=self.filename, file_id=self.file_id)
+        print(f"Image {self.filename} was inserted to mongoDB")
 
-    def get_file_metadata(self):
+    def set_file_id(self):
+        file_id = self.file_metadata['_id']
+        self.file_id = file_id
+
+    def set_file_metadata(self):
         regex_query = {"filename": {"$regex": f"^{self.filename}"}}
         file_metadata = self.db.fs.files.find_one(regex_query)
         print(f"file_metadata {file_metadata}")
@@ -56,9 +59,8 @@ class MongoDB:
             print("file was not found.")
             return False
         else:
-            # logging.debug(f"file id for the movie {self.movie_name}: {file_metadata['_id']}")
-            # file_id = file_metadata['_id']
-            return file_metadata
+            self.file_metadata = file_metadata
+
 
     def read_image_file(self):
         output_data = self.fs.get(self.file_id).read()
@@ -89,7 +91,7 @@ class MongoDB:
                 print(i)
 
     def download_file_from_db(self):
-        print(f"in download from mongo. filename = {self.filename}")
+        print(f"in download download_file_from_mongodb . filename = {self.filename}")
         poster_bytes = self.fs.get(self.file_id).read()
         print(f"output_data: {poster_bytes[:10]}")
 
@@ -109,17 +111,5 @@ if __name__ == "__main__":
 
     poster_abs_path = r"C:\Users\Hagai\Desktop\AWS\course projects\Imdb_To_Mongo\posters\matrix_poster.jpeg"
 
-    mdb.write_image_file(poster_abs_path, "1")
-    # mdb.get_full_filename()
-    # mdb.is_file_exist(movie_name)
-    # mdb.read_image_file()
-    # print(mdb.update_image_file_meta_data(movie_name, "filename2", "updated"))
-    # mdb.del_image_file("spiderman")
-
-    # filename = "Frozen_poster.jpeg"
-    # poster_abs_path = r"C:\Users\Hagai\Desktop\AWS\course projects\Imdb_To_Mongo\posters\Frozen_poster.jpeg"
-    # target_path = '\\'.join(target_path)
-    # print(target_path)
-    # target_path = poster_abs_path.split('\\')[:-1]
-
+    mdb.write_to_mongo(poster_abs_path, "1")
 

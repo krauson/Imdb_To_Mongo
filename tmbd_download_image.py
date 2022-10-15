@@ -23,12 +23,13 @@ class TMDBDownloader:
         self.movie_name = movie_name         # check name for legality
         self.imdb_id = self.get_movie_id()
         self.filename = movie_name + '_poster.jpeg'
+        self.poster_url = ""
 
     def get_movie_id(self):
         imdb_obj = imdb.IMDb()
-        print(f"imdb_obj:{imdb_obj}")
         movies = imdb_obj.search_movie(self.movie_name)
-        print(f"movie[0]:{movies[0]}")
+        print(f"movies:{movies}")
+        print(f"movies[0]:{movies[0]}")
         imdb_id = "tt" + str(movies[0].movieID)
         return imdb_id
 
@@ -42,19 +43,14 @@ class TMDBDownloader:
             rel_path = poster['file_path']
             url = "{0}{1}{2}".format(self.image_base_url, self.max_size, rel_path)
             poster_urls.append(url)
-        return poster_urls[0] # return only the first poster url
+        poster_url = poster_urls[0]
+        self.poster_url = poster_url
+        print(f"poster_url = {poster_url}")
+        return poster_url # return only the first poster url
 
-    # def set_filename(self):
-    #     poster_url = self.get_poster_url()
-    #     print(f"poster_url= {poster_url}")
-    #     poster_data = requests.get(poster_url)
-    #     filetype = poster_data.headers['content-type'].split('/')[-1]
-    #     self.filename = '{0}_poster.{1}'.format(self.movie_name, filetype)
-    #     return self.filename
 
     def download_poster_file(self):
         poster_url = self.get_poster_url()
-        print(f"poster_url= {poster_url}")
         poster_data = requests.get(poster_url)
         poster_binary = poster_data.content
 

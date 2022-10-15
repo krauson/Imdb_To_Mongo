@@ -12,7 +12,8 @@ def search():
     movie_name = request.form['movie_name']
     movie_name = movie_name.lower()
     print(f"movie_name = {movie_name}")
-    download_poster_to_user_pc(movie_name)
-    return render_template("hello.html", movie_name=movie_name)
+    poster_url = download_poster_to_user_pc(movie_name)
+    poster_url = "http://image.tmdb.org/t/p/original/5O1GLla5vNuegqNxNhKL1OKE1lO.jpg"
+    return render_template("show_movie.html", movie_name=movie_name)
 
 app.run(host='127.0.0.5', port=81, debug=False)
