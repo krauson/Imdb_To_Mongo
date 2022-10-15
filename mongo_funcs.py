@@ -1,9 +1,7 @@
 from pymongo import MongoClient
 import gridfs
-# import logging
 from config_file import content_path
 
-# logging.basicConfig(level=logging.DEBUG)
 
 def format_filename(movie_name):
     return movie_name + '_poster.jpeg'
@@ -38,12 +36,12 @@ class MongoDB:
         self.movie_name = movie_name
         self.filename = format_filename(movie_name)
         self.file_metadata = self.get_file_metadata()
+        print(f"fil meta:{self.file_metadata}")
         self.file_id = self.file_metadata['_id']
 
 
     def write_image_file(self, file_path, imdb_code):
         """Writes an image file to the DB"""
-
         with open(file_path, 'rb') as image_file:
             data = image_file.read()
             filename = file_path.split('\\')[-1]
@@ -106,12 +104,12 @@ if __name__ == "__main__":
     """
     test module
     """
-    mdb = MongoDB("localhost", 27017, "Frozen")
+    mdb = MongoDB("localhost", 27017, "venom")
     # mdb.download_file_from_db()
 
+    poster_abs_path = r"C:\Users\Hagai\Desktop\AWS\course projects\Imdb_To_Mongo\posters\matrix_poster.jpeg"
 
-
-    # mdb.write_image_file(poster_abs_path, "bla-bla")
+    mdb.write_image_file(poster_abs_path, "1")
     # mdb.get_full_filename()
     # mdb.is_file_exist(movie_name)
     # mdb.read_image_file()
