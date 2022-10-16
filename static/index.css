@@ -1,0 +1,14 @@
+h1{
+  color: red;
+  text-align: center;
+  border: solid black 2px;
+  background:#0be1f0;
+  margin: 0%;
+}
+
+
+/*
+body, html {
+  height: 100%;
+}
+*/

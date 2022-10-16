@@ -38,7 +38,6 @@ class MongoDB:
         self.file_metadata = None
         self.file_id = None
 
-
     def write_to_mongo(self, poster_url):
         """Writes an image file to the DB"""
         file_path = self.content_path + '\\' + self.filename
@@ -47,6 +46,7 @@ class MongoDB:
             self.fs.put(data_binary, filename=self.filename, poster_url=poster_url)
         print(f"Image {self.filename} was inserted to mongoDB")
 
+
     def set_file_id(self):
         file_id = self.file_metadata['_id']
         self.file_id = file_id
@@ -54,18 +54,20 @@ class MongoDB:
     def set_file_metadata(self):
         regex_query = {"filename": {"$regex": f"^{self.filename}"}}
         file_metadata = self.db.fs.files.find_one(regex_query)
-        print(f"file_metadata {file_metadata}")
+        print(f"file_metadata: {file_metadata}")
         if file_metadata is None:
             print("file was not found.")
             return False
         else:
             self.file_metadata = file_metadata
+            return True
 
 
-    def read_image_file(self):
-        output_data = self.fs.get(self.file_id).read()
-        # print(f"output_data: {output_data}")
-        return output_data
+    # def read_image_file(self):
+    #     output_data = self.fs.get(self.file_id).read()
+    #     # print(f"output_data: {output_data}")
+    #     # print(output_data)
+    #     return output_data
 
     def del_image_file(self,movie_name):
         self.fs.delete(self.file_id)
@@ -90,16 +92,15 @@ class MongoDB:
             for i in doc:
                 print(i)
 
-    def download_file_from_db(self):
+    def download_poster_from_db(self):
         print(f"in download download_file_from_mongodb . filename = {self.filename}")
         poster_bytes = self.fs.get(self.file_id).read()
-        print(f"output_data: {poster_bytes[:10]}")
+        print(f"data in bytes: {poster_bytes[:10]}")
 
         target_path = self.content_path + '\\' + self.filename
         print(f"target_path = {target_path}")
         with open(target_path, 'wb') as output_file:
             output_file.write(poster_bytes)
-        print(f"File {self.filename} was dowloaded to: {target_path}")
 
 
 if __name__ == "__main__":
