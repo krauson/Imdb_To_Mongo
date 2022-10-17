@@ -1,4 +1,4 @@
-from tmbd_download_image import TMDBDownloader
+from tmbd_downloader import TMDBDownloader
 from mongo_funcs import MongoDB, is_file_exist_in_mongo
 
 
@@ -22,7 +22,6 @@ def download_poster_to_user_pc(movie_name):
     port = 27017
     is_poster_in_mongo = is_file_exist_in_mongo(movie_name, ip, port)
     mongo_db = MongoDB("127.0.0.1", 27017, movie_name)
-    poster_url = None
 
     if is_poster_in_mongo:
         print(f"Trying to download from MongoDB..")

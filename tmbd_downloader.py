@@ -41,17 +41,21 @@ class TMDBDownloader:
     def get_poster_url(self):
         img_url_request = self.IMAGE_REQUEST_PATTERN.format(key=self.KEY, imdbid=self.imdb_id)
         api_response = requests.get(img_url_request).json()
-        print(f"api_response[posters]:{api_response['posters']}")
-        posters = api_response['posters']
-        poster_urls = []
-        for poster in posters:
-            rel_path = poster['file_path']
-            url = "{0}{1}{2}".format(self.image_base_url, self.max_size, rel_path)
-            poster_urls.append(url)
-        poster_url = poster_urls[0]
-        self.poster_url = poster_url
-        print(f"poster_url = {poster_url}")
-        return poster_url # return only the first poster url
+        try:
+            print(f"api_response[posters]:{api_response['posters']}")
+            posters = api_response['posters']
+            poster_urls = []
+            for poster in posters:
+                rel_path = poster['file_path']
+                url = "{0}{1}{2}".format(self.image_base_url, self.max_size, rel_path)
+                poster_urls.append(url)
+            poster_url = poster_urls[0]
+            self.poster_url = poster_url
+            print(f"poster_url = {poster_url}")
+            return poster_url  # return only the first poster url
+
+        except KeyError:
+            return None
 
 
     def download_poster_file(self):
