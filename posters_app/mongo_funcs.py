@@ -38,7 +38,7 @@ class MongoDB:
 
     def write_to_mongo(self, poster_url):
         """Writes an image file to the DB"""
-        file_path = self.content_path + '\\' + self.filename
+        file_path = self.content_path + '/' + self.filename
         with open(file_path, 'rb') as image_file:
             data_binary = image_file.read()
             self.fs.put(data_binary, filename=self.filename, poster_url=poster_url)

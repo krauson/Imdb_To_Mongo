@@ -66,10 +66,8 @@ class TMDBDownloader:
         poster_binary = poster_data.content
 
         print(f"sys.platform:{sys.platform}")
-        if sys.platform == "linux":
-            target_path = '/'.join([content_path, self.filename])
-        else:
-            target_path = '\\'.join([content_path, self.filename])
+        target_path = '/'.join([content_path, self.filename])
+        # target_path = '\\'.join([content_path, self.filename])
         print(f"target_path: {target_path}")
         with open(target_path, 'wb') as image_file:
             image_file.write(poster_binary)

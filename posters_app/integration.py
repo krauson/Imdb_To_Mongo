@@ -1,5 +1,3 @@
-import sys
-
 from tmbd_downloader import TMDBDownloader
 from mongo_funcs import MongoDB
 
@@ -18,12 +16,8 @@ def get_poster_from_mongo_db(movie_name, mongo_db):
 
 def download_poster_to_user_pc(movie_name):
     """Gets a movie name and download the poster to the user's PC"""
-    host = ""
-    if sys.platform == "win32":
-        host = "localhost" # for debugging from my own PC
-    else:
-        host = "db-movie" # for the DB in the container
-    print(f"sys.platform: {sys.platform}")
+    # host = "localhost" # for debugging from my own PC
+    host = "db-movie" # for the DB in the container
     mongo_port = 27017
     mongo_db = MongoDB(host, mongo_port, movie_name)
     is_poster_in_mongo = mongo_db.is_file_exist_in_mongo()
