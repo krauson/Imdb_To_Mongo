@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+    <html lang="en">
+        <head>
+<!--            <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='index.css') }}">-->
+            <title>Search A Movie Poster </title>
+        </head>
+        <body>
+            <div id="container">
+                <div class="form">
+                    <form action="/search" method="post">
+                        <div id="input-1">
+                            <label for="movie_name"><h1>Insert Movie Name to download it's poster to the content folder:</h1></label>
+                            <input type="text" name="movie_name" id='movie_name' required>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <div id="div-submit">
+                            <input type="submit" value="submit">
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </body>
+    </html>

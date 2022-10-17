@@ -1,0 +1,11 @@
+/*body{
+  background-image: url(images/cinema_background.jpeg);
+}
+*/
+h1{
+  color: red;
+  text-align: center;
+  border: solid black 2px;
+  background:#0be1f0;
+  margin: 0%;
+}
