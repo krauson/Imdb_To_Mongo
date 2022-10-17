@@ -1,0 +1,8 @@
+# download docker
+yum update
+
+# curl/dowload the files from my github repo
+
+# insert the API KEY to the param store
+
+# docker-compose up

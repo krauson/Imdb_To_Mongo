@@ -23,7 +23,7 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # Copying project files
-RUN mkdir -p /app/{templates}
+RUN mkdir -p /app/templates
 
 
 

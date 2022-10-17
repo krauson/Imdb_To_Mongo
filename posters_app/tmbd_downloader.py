@@ -1,7 +1,8 @@
 import requests
 from config_file import API_KEY, content_path
 import imdb
-
+import os
+import sys
 
 def convert_image_size_to_int(x: str) -> int:
     """sorting function to get the biggest picture size """
@@ -55,6 +56,7 @@ class TMDBDownloader:
             return poster_url  # return only the first poster url
 
         except KeyError:
+            print(KeyError)
             return None
 
 
@@ -63,9 +65,12 @@ class TMDBDownloader:
         poster_data = requests.get(poster_url)
         poster_binary = poster_data.content
 
-        target_path = content_path + '\\' + self.filename
-        # print(f"first bits of content: {poster_data.content[:20]}")
-        # print(f"target path:{target_path}")
+        print(f"sys.platform:{sys.platform}")
+        if sys.platform == "linux":
+            target_path = '/'.join([content_path, self.filename])
+        else:
+            target_path = '\\'.join([content_path, self.filename])
+        print(f"target_path: {target_path}")
         with open(target_path, 'wb') as image_file:
             image_file.write(poster_binary)
         print(f"{self.movie_name} was downloaded succussfully to {content_path}.")

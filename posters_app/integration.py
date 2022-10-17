@@ -1,11 +1,12 @@
+import sys
+
 from tmbd_downloader import TMDBDownloader
-from mongo_funcs import MongoDB, is_file_exist_in_mongo
+from mongo_funcs import MongoDB
 
 
 def get_poster_from_tmdb_website(movie_name):
 
     tmdb = TMDBDownloader(movie_name)
-
     tmdb.download_poster_file()
     print(f"Movie {tmdb.movie_name} poster was downloaded successfully from TMDB web API to the posters directory")
     return tmdb.poster_url
@@ -17,10 +18,15 @@ def get_poster_from_mongo_db(movie_name, mongo_db):
 
 def download_poster_to_user_pc(movie_name):
     """Gets a movie name and download the poster to the user's PC"""
-    host = "db-movie"
-    port = 27017
-    is_poster_in_mongo = is_file_exist_in_mongo(movie_name, host, port)
-    mongo_db = MongoDB(host, port, movie_name)
+    host = ""
+    if sys.platform == "win32":
+        host = "localhost" # for debugging from my own PC
+    else:
+        host = "db-movie" # for the DB in the container
+    print(f"sys.platform: {sys.platform}")
+    mongo_port = 27017
+    mongo_db = MongoDB(host, mongo_port, movie_name)
+    is_poster_in_mongo = mongo_db.is_file_exist_in_mongo()
 
     if is_poster_in_mongo:
         print(f"Trying to download from MongoDB..")
@@ -29,7 +35,6 @@ def download_poster_to_user_pc(movie_name):
         get_poster_from_mongo_db(movie_name, mongo_db)
         mongo_db.set_file_metadata()
         poster_url = mongo_db.file_metadata['poster_url']
-
 
     else:
         print(f"Trying to download from TMDB..")

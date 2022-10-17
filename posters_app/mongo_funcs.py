@@ -7,29 +7,12 @@ def format_filename(movie_name):
     return movie_name + '_poster.jpeg'
 
 
-def is_file_exist_in_mongo(movie_name, host, port):
-    db = MongoClient(host, port).posters
-    fs = gridfs.GridFS(db)
-    filename = format_filename(movie_name)
-    regex_query = {"filename": {"$regex": f"^{filename}"}}
-    is_file_exist = False
-    reg_mydoc = fs.find(regex_query)
-
-    for _ in reg_mydoc:  # if the loop will go at least one time the regex exp exists
-        print(f"file {filename} was found in MongoDB")
-        is_file_exist = True
-
-    if not is_file_exist:
-        print(f"file {filename} was not found in MongoDB")
-    return is_file_exist
-
-
 class MongoDB:
     content_path = content_path
 
-    def __init__(self, host, port, movie_name):
+    def __init__(self, host, mongo_port, movie_name):
         # connect to DB:
-        db = MongoClient(host, port).posters
+        db = MongoClient(host, mongo_port).posters
         fs = gridfs.GridFS(db)
         self.fs = fs
         self.db = db
@@ -37,6 +20,21 @@ class MongoDB:
         self.filename = format_filename(movie_name)
         self.file_metadata = None
         self.file_id = None
+
+    def is_file_exist_in_mongo(self):
+        fs = gridfs.GridFS(self.db)
+        filename = format_filename(self.movie_name)
+        regex_query = {"filename": {"$regex": f"^{filename}"}}
+        is_file_exist = False
+        reg_mydoc = fs.find(regex_query)
+
+        for _ in reg_mydoc:  # if the loop will go at least one time the regex exp exists
+            print(f"file {filename} was found in MongoDB")
+            is_file_exist = True
+
+        if not is_file_exist:
+            print(f"file {filename} was not found in MongoDB")
+        return is_file_exist
 
     def write_to_mongo(self, poster_url):
         """Writes an image file to the DB"""

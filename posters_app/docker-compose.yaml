@@ -1,7 +1,7 @@
 version: "3"
 services:
   website:
-    build: . #change to latest when deploying on EC2
+    build: .
     environment:
       - MY_NAME=HAGAI
     depends_on:
