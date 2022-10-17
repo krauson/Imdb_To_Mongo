@@ -14,7 +14,12 @@ systemctl enable docker.service
 systemctl start docker.service
 
 # curl/dowload the files from my github repo
+yum install git
+git clone
 
 # insert the API KEY to the param store
 
 # docker-compose up
+# not working when I did sudo docker-compose up so:
+sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
