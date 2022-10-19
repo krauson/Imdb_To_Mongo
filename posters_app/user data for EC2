@@ -1,25 +1,35 @@
 #! /bin/bash
 
+export API_KEY="5b8a2dbae1833b908c30e1f2e192a580"
+
 # download docker
-yum update
+yum update -y
 yum install docker -y
 
 # 1. Get pip3
-sudo yum install python3-pip
+yum install python3-pip -y
 
-# 2. Then run any one of the following
-sudo pip3 install docker-compose # with root access
 
 systemctl enable docker.service
 systemctl start docker.service
 
 # curl/dowload the files from my github repo
-yum install git
-git clone
-
+cd /home/ec2-user
+touch hagai.txt
+yum install git -y
+git clone https://github.com/krauson/Imdb_To_Mongo.git
+cd Imdb_To_Mongo/posters_app/
 # insert the API KEY to the param store
+
+mkdir /home/ec2/Imdb_To_Mongo/posters_app/posters
 
 # docker-compose up
 # not working when I did sudo docker-compose up so:
-sudo chmod +x /usr/local/bin/docker-compose
-sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+pip3 install docker-compose# with root access
+
+chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose up
+
+cp /var/log/cloud-init-output.log ~
+cat ~/cloud-init-output.log > ~/log.txt
