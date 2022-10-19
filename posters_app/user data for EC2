@@ -19,9 +19,10 @@ touch hagai.txt
 yum install git -y
 git clone https://github.com/krauson/Imdb_To_Mongo.git
 cd Imdb_To_Mongo/posters_app/
+mkdir posters
+
 # insert the API KEY to the param store
 
-mkdir /home/ec2/Imdb_To_Mongo/posters_app/posters
 
 # docker-compose up
 # not working when I did sudo docker-compose up so:
@@ -32,4 +33,3 @@ ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 docker-compose up
 
 cp /var/log/cloud-init-output.log ~
-cat ~/cloud-init-output.log > ~/log.txt
