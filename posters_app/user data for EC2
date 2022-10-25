@@ -26,10 +26,11 @@ mkdir posters
 
 # docker-compose up
 # not working when I did sudo docker-compose up so:
-pip3 install docker-compose# with root access
-
-chmod +x /usr/local/bin/docker-compose
+# pip3 install docker-compose# with root access
+curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
 docker-compose up
 
-cp /var/log/cloud-init-output.log ~
+# cp /var/log/cloud-init-output.log ~

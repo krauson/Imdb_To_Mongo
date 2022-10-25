@@ -13,3 +13,6 @@ Action to do for using the app:
 2)make sure you have posters folder in the location you run app_server from.
 3)run the file app_server.py using.
 4)open the browser and choose your prefered movie.
+
+
+Right now the config_file.py have to be transfered manually into the EC2.
