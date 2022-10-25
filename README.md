@@ -1,4 +1,5 @@
 # Imdb_To_Mongo
+
 Project Description:
 
 This project aims to use web browser to download a chosen movie poster,
@@ -9,10 +10,14 @@ so the next time the very same poster will be requested it will be retrieved fro
 which will be faster.
 
 Action to do for using the app:
-1)pip install -r requirements.txt (download all the dependencies for this project).
-2)make sure you have posters folder in the location you run app_server from.
-3)run the file app_server.py using.
-4)open the browser and choose your prefered movie.
+1.Launch an EC2, use the user_data.sh file
+2.Copy the config_file.py into the posters_app dir
 
+# Right now the config_file.py have to be transfered manually into the EC2.
 
-Right now the config_file.py have to be transfered manually into the EC2.
+3.In the terminal write: docker-compose down
+4.In the terminal write: docker-compose up
+
+# (now the config_file will be taken into account as well).
+
+5.open the browser and choose your prefered movie.
