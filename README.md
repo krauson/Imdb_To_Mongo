@@ -1,5 +1,5 @@
 # Imdb_To_Mongo
-![alt text](https://qph.cf2.quoracdn.net/main-qimg-70b6a8ad21a92693ab61107591e4fa25-lq)
+![alt text](https://cdn.celluloidjunkie.com/wp-content/uploads/2021/04/30144535/Paper-vs-Digital-Movie-Posters-Featured.jpg)
 Project Description:
 
 This project aims to use web browser to download a chosen movie poster,
