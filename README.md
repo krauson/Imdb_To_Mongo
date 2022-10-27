@@ -21,3 +21,5 @@ Action to do for using the app:
 # (now the config_file will be taken into account as well).
 
 5.open the browser and choose your prefered movie.
+
+![image](https://user-images.githubusercontent.com/40236466/198407883-4e5ec115-ca56-408e-99dd-7bc763fc7aa2.png)
