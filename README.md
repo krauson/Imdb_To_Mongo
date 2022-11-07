@@ -2,7 +2,7 @@
 ![alt text](https://cdn.celluloidjunkie.com/wp-content/uploads/2021/04/30144535/Paper-vs-Digital-Movie-Posters-Featured.jpg)
 Project Description:
 
-This project aims to use web browser to download a chosen movie poster,
+# This project aims to use web browser to download a chosen movie poster
 the software first start looking at a designated MongoDB if the poster is not found there,
 the software tries to download it from IMDB through API request using API key,
 after downloading the poster from IMDB to the local computer the poster is inserted to MongoDB,
@@ -18,7 +18,7 @@ Action to do for using the app:
 3.In the terminal write: docker-compose down
 4.In the terminal write: docker-compose up
 
-# (now the config_file will be taken into account as well).
+(now the config_file will be taken into account as well).
 
 5.open the browser and choose your prefered movie.
 
